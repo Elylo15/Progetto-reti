@@ -31,7 +31,7 @@ begin
             stored_value <= "00011111";
 
         elsif i_clk' event and i_clk='1' then
-            output <= stored_value;
+            stored_value <= stored_value;
         end if;
     output <= stored_value;
     end process;
