@@ -24,7 +24,7 @@ architecture SUM_K_arch of SUM_K is
 begin
     HA_0: ha_k port map ((K_EN and '1'), RK(0),sum(0), carry);
     ADDS_generator: for I in 1 to 8 generate
-        HA_I: ha_K port map (RK(I-1), RK(I), sum(0), carry);
+        HA_I: ha_k port map (RK(I-1), RK(I), sum(0), carry);
     end generate;
     store<=RK;
     output <= store;
