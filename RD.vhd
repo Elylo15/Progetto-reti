@@ -7,7 +7,7 @@ entity RD is
 	i_rst : in std_logic;
 	RD_RST: in std_logic;
 	RD_EN: in std_logic;
-	RD: out std_logic_vector(7 downto 0)
+	output: out std_logic_vector(7 downto 0)
  ); 
 end RD;
 
@@ -27,6 +27,6 @@ begin
 		elsif i_clk' event and i_clk='1' then
 			stored_value <= stored_value;
 		end if;
-		RD<= stored_value;
+		output <= stored_value;
 	end process;
 end RD_arch;
