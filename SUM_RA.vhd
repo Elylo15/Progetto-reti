@@ -23,7 +23,7 @@ architecture SUM_RA_arch of SUM_RA is
     end component;
 begin
     HA_0: ha port map ((ADD_EN and '1'), RA(0),sum(0), carry);
-    ADDS_generator: for I in 0 to 15 generate
+    ADDS_generator: for I in 1 to 15 generate
         HA_I: ha port map (RA(I-1), RA(I), sum(0), carry);
     end generate;
     store<=RA;
