@@ -39,8 +39,8 @@ begin
             stored_value <= (others =>'0');
             
         elsif i_clk' event and i_clk='1' then
-            output <= stored_value;
+            stored_value <= stored_value;
         end if;
-      stored_value <= stored_value;
+      output <= stored_value;
     end process;
 end RA_arch;
