@@ -31,6 +31,7 @@ architecture FSMK_arch of FSMK is
             end if;
         end process;
         
+        --uscita combinatoria data da una realizzazione fisica della fsm usando flip flop di tipo D
         INC_EN <= ADD_EN and codstate;
         
         process(curr_state)
