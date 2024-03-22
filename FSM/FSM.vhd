@@ -15,9 +15,7 @@ architecture FSM_arch of FSM is
     begin
         delta_function : process(ck, rst) --spaghetti code per le transizioni della fsm
         begin
-            if (rst='1') then
-                curr_state <= S0;
-            elsif (ck'event and ck='1') then
+            if (ck'event and ck='1' and rst='0') then
                 if (curr_state=S0 and START='0' and DONE='0') then
                     curr_state <= S0;
                 elsif (curr_state=S0 and START='1' and DONE='0') then 
@@ -53,6 +51,8 @@ architecture FSM_arch of FSM is
                 elsif (curr_state=SF and START='0' and DONE='1') then
                     curr_state <= S0;
                 end if;
+            elsif (rst='1') then
+                curr_state <= S0;
             end if;
         end process;
         --spaghettone allo scoglio per la lambda function
