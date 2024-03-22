@@ -50,7 +50,7 @@ architecture FSM_arch of FSM is
                     curr_state <= SF;
                 elsif (curr_state=SF and START='1' and DONE='1') then
                     curr_state <= SF;
-                elsif (curr_state=S0 and START='0' and DONE='1') then
+                elsif (curr_state=SF and START='0' and DONE='1') then
                     curr_state <= S0;
                 end if;
             end if;
@@ -125,7 +125,7 @@ architecture FSM_arch of FSM is
                       '0' when S5,
                       '1' when S6,
                       '0' when S7,
-                      '1' when S8,
+                      '0' when S8,
                       '0' when SF,
                       'X' when others;
         with curr_state select
