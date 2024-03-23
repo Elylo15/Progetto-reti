@@ -16,7 +16,7 @@ architecture FSM_tb_arch of FSM_tb is
 
     signal s_START, s_E, s_DONE, s_rst, s_ADD_EN, s_RD_EN, s_SEL_OUT, s_RC_RST, s_RD_RST, s_SUB_EN, s_MEM_E, s_MEM_WE : std_logic;
     signal s_clk : std_logic := '1';
-    shared variable simend : boolean :=false;
+    shared variable simulend : boolean :=false;
     begin
         uut: FSM port map(
             --INPUTS
@@ -36,14 +36,14 @@ architecture FSM_tb_arch of FSM_tb is
             O_MEM_WE => s_MEM_WE
         );
 
-        clkk : process
+        clock : process
         begin
-            while simend=false loop
+            while simulend=false loop
                 s_clk <= not s_clk;
                 wait for clock_period/2;
             end loop;
             wait;
-        end process clkk;
+        end process clock;
 
         --percorso S0-S1-S3-S4-S1-S2-S5-S6-S7-S8-SF-S0
         stim_proc: process
@@ -286,7 +286,7 @@ architecture FSM_tb_arch of FSM_tb is
             
 
             wait for 1 ns;
-            simend := true;
+            simulend := true;
             report "The testbench is over";
             wait;
         end process;
