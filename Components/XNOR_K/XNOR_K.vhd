@@ -17,7 +17,7 @@ begin
     XNOR_calculation: for i in 0 to 9 generate
 	   intermediate(i) <= not (i_k(i) xnor RK(i));
 	end generate;
-	stored_value <= '1' when intermediate <= (otherS=>'1') else '0';
+	stored_value <= '1' when intermediate = "1111111111" else '0';
 	output <= stored_value;
 end XNOR_K_arch;
 
