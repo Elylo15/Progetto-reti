@@ -3,8 +3,8 @@ use ieee.std_logic_1164.all;
 
 entity FSM is
     port(
-        START, E, DONE, ck, rst: in std_logic;
-        ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic
+        START, E, DONE, clk, rst: in std_logic;
+        ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SUB_EN, O_MEM_EN, O_MEM_WE: out std_logic
     );
 end entity;
 
@@ -13,9 +13,9 @@ architecture FSM_arch of FSM is
     signal curr_state: S;
 
     begin
-        delta_function : process(ck, rst) --spaghetti code per le transizioni della fsm
+        delta_function : process(clk, rst) --spaghetti code per le transizioni della fsm
         begin
-            if (ck'event and ck='1' and rst='0') then
+            if (clk'event and clk='1' and rst='0') then
                 if (curr_state=S0 and START='0' and DONE='0') then
                     curr_state <= S0;
                 elsif (curr_state=S0 and START='1' and DONE='0') then 
@@ -129,7 +129,7 @@ architecture FSM_arch of FSM is
                       '0' when SF,
                       'X' when others;
         with curr_state select
-           O_MEM_E <= '0' when S0,
+           O_MEM_EN <= '0' when S0,
                       '1' when S1,
                       '0' when S2,
                       '0' when S3,
