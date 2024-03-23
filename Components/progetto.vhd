@@ -15,7 +15,7 @@ entity project_reti_logiche is
         i_mem_data: in std_logic_vector(7 downto 0);
         o_mem_data: out std_logic_vector(7 downto 0);
         o_mem_we: out std_logic;
-        o_mem_e: out std_logic
+        o_mem_en: out std_logic
 
     );
 end project_reti_logiche;
@@ -148,7 +148,7 @@ architecture Behavioral of project_reti_logiche is
     component FSM is
         port(
             START, E, DONE, clk, rst: in std_logic;
-            ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic
+            ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SUB_EN, O_MEM_EN, O_MEM_WE: out std_logic
         );
     end component;
 
@@ -181,7 +181,9 @@ architecture Behavioral of project_reti_logiche is
     
     signal reg_k: std_logic_vector(9 downto 0);
     signal sum_reg_k: std_logic_vector(9 downto 0);
-     signal inc_en: std_logic;
+    signal inc_en: std_logic;
+    
+    signal done: std_logic; 
     
 begin
 
@@ -238,7 +240,7 @@ begin
    FSM_1 : FSM port map(
         START => i_start,
         E => E,
-        DONE => o_done,
+        DONE => done,
         clk => i_clk,
         rst => i_rst,
         ADD_EN => add_en,
@@ -247,7 +249,7 @@ begin
         RC_RST => rc_rst,
         RD_RST => rd_rst,
         SUB_EN => sub_en,
-        O_MEM_E => o_mem_e,
+        O_MEM_EN => o_mem_en,
         O_MEM_WE => o_mem_we
    );
    
@@ -278,3 +280,5 @@ begin
         INC_EN => inc_en
    );
 end Behavioral;
+
+
