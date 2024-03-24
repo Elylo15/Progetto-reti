@@ -15,7 +15,7 @@ entity project_reti_logiche is
         i_mem_data: in std_logic_vector(7 downto 0);
         o_mem_data: out std_logic_vector(7 downto 0);
         o_mem_we: out std_logic;
-        o_mem_en: out std_logic
+        o_mem_e: out std_logic
 
     );
 end project_reti_logiche;
@@ -37,9 +37,9 @@ architecture Behavioral of project_reti_logiche is
         port(
             i_clk : in std_logic;
             i_rst : in std_logic;
-            RC: in std_logic_vector(15 downto 0);
+            RC: in std_logic_vector(7 downto 0);
             SUB_EN: in std_logic;
-            output : out std_logic_vector(15 downto 0)
+            output : out std_logic_vector(7 downto 0)
         );
     end component;
 
@@ -109,9 +109,9 @@ architecture Behavioral of project_reti_logiche is
     --SUB RC
     component SUB_RC is
         Port (
-            RC: in std_logic_vector(15 downto 0);
+            RC: in std_logic_vector(7 downto 0);
             SUB_EN: in std_logic;
-            output: out std_logic_vector(15 downto 0)
+            output: out std_logic_vector(7 downto 0)
         );
     end component;
 
@@ -148,7 +148,7 @@ architecture Behavioral of project_reti_logiche is
     component FSM is
         port(
             START, E, DONE, clk, rst: in std_logic;
-            ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SUB_EN, O_MEM_EN, O_MEM_WE: out std_logic
+            ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic
         );
     end component;
 
@@ -249,7 +249,7 @@ begin
         RC_RST => rc_rst,
         RD_RST => rd_rst,
         SUB_EN => sub_en,
-        O_MEM_EN => o_mem_en,
+        O_MEM_E => o_mem_e,
         O_MEM_WE => o_mem_we
    );
    
@@ -280,5 +280,3 @@ begin
         INC_EN => inc_en
    );
 end Behavioral;
-
-
