@@ -12,6 +12,7 @@ end SUM_RA;
 architecture SUM_RA_arch of SUM_RA is
     signal store: std_logic_vector (15 downto 0);
     signal sum: std_logic_vector(15 downto 0);
+    signal AND_ADDRESS: std_logic := ADD_EN and '1';
     signal carry_in: std_logic :='0';
     signal carry_out: std_logic :='0';
     component ha
@@ -23,7 +24,7 @@ architecture SUM_RA_arch of SUM_RA is
         );
     end component;
 begin
-    HA_0: ha port map ((ADD_EN and '1'), RA(0),sum(0), carry_in);
+    HA_0: ha port map (AND_ADDRESS, RA(0),sum(0), carry_in);
     ADDS_generator: for I in 1 to 15 generate
         HA_I: ha port map (carry_in, RA(I), sum(0), carry_out);
         carry_in <=carry_out;
