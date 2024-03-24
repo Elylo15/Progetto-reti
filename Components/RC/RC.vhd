@@ -5,20 +5,20 @@ entity RC is
     port(
         i_clk : in std_logic;
         i_rst : in std_logic;
-        RC: in std_logic_vector(15 downto 0);
+        RC: in std_logic_vector(7 downto 0);
         SUB_EN: in std_logic;
-        output : out std_logic_vector(15 downto 0)
+        output : out std_logic_vector(7 downto 0)
     );
 end RC;
 
 architecture RC_arch of RC is
-    signal stored_value: std_logic_vector(15 downto 0);
+    signal stored_value: std_logic_vector(7 downto 0);
 
     component SUB_RC is
         Port (
-            RC: in std_logic_vector(15 downto 0);
+            RC: in std_logic_vector(7 downto 0);
             SUB_EN: in std_logic;
-            output: out std_logic_vector(15 downto 0)
+            output: out std_logic_vector(7 downto 0)
         );
     end component;
 begin
