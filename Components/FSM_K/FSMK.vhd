@@ -15,7 +15,9 @@ architecture FSMK_arch of FSMK is
     begin 
         delta_function : process(ck, rst)
         begin
-            if (ck'event and ck='1' and rst='0') then
+            if (rst='1') then
+                curr_state <= S0;
+            elsif (ck'event and ck='1' and rst='0') then
                 if (curr_state=S0 and ADD_EN='0') then
                     curr_state <= S0;
                 elsif (curr_state=S0 and ADD_EN='1') then
@@ -29,8 +31,7 @@ architecture FSMK_arch of FSMK is
                 elsif (curr_state=S2 and ADD_EN='1') then
                     curr_state <= S1;
                 end if;
-            elsif (rst='1') then
-                curr_state <= S0;
+            
             end if;
         end process;
         
