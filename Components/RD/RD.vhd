@@ -13,7 +13,7 @@ end RD;
 
 --il registro si resetta a 0, e si carica con i_mem_data
 architecture RD_arch of RD is
-signal stored_value: std_logic_vector(15 downto 0);
+signal stored_value: std_logic_vector(7 downto 0);
 begin
 	process(RD_RST, i_clk, RD_EN, i_mem_data)
 	begin
