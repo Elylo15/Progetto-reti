@@ -125,24 +125,24 @@ architecture Behavioral of project_reti_logiche is
     end component;
 
     --half adder 
-    --component half_adder is
-    --    port(
-    --		a: in std_logic;
-    --		b: in std_logic;
-    --		c: out std_logic;
-    --		s: out std_logic
-    --	);
-    --end component;
+    component half_adder is
+       port(
+    		a: in std_logic;
+    		b: in std_logic;
+    		c: out std_logic;
+    		s: out std_logic
+    	);
+    end component;
 
     --half subtractor 
-    --component half_subtractor is
-    --    Port (
-    --        a: in std_logic;
-    --        b: in std_logic;
-    --        borrow: out std_logic;
-    --        diff: out std_logic
-    --    );
-    --end component;
+    component half_subtractor is
+        Port (
+            a: in std_logic;
+            b: in std_logic;
+            borrow: out std_logic;
+            diff: out std_logic
+        );
+    end component;
 
     --FSM 
     component FSM is
@@ -202,7 +202,7 @@ begin
         output => reg_cred
    );
    
-   sum_reg_cred: SUB_RC port map(
+   sub_reg_cred_1: SUB_RC port map(
          RC => reg_cred,
          SUB_EN => sub_en,
          output => sub_cred
