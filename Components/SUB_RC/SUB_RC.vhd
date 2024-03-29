@@ -11,26 +11,16 @@ entity SUB_RC is
 end SUB_RC;
 
 architecture SUB_RC_arch of SUB_RC is
-    signal store: std_logic_vector (7 downto 0);
-    signal diff: std_logic_vector(7 downto 0);
-    signal borrow_in: std_logic :='0';
-    signal borrow_out: std_logic :='0';
-    signal AND_RC: std_logic := SUB_EN and '1';
-    component hs  is
-        Port (
-            a: in std_logic;
-            b: in std_logic;
-            borrow: out std_logic;
-            diff: out std_logic
-        );
-    end component;
+   signal s_borrow : std_logic; 
 begin
-    HS_0: hs port map (AND_RC, RC(0),borrow_in, diff(0));
-    ADDS_generator: for I in 1 to 7 generate
-        HS_I: hs port map (borrow_in, RC(I), borrow_out, diff(0));
-        borrow_in <= borrow_out;
-    end generate;
-    store<=RC;
-    output <= store;
+  SUB0: entity work.half_subtractor
+        port map (
+            A => RC(0),
+            B => SUB_EN,
+            borrow => s_borrow,
+            diff => output(0)
+        );
+       
+    output(7 downto 1) <= RC(7 downto 1);
 
 end SUB_RC_arch;
