@@ -3,17 +3,17 @@ use ieee.std_logic_1164.all;
 
 entity FSM is
     port(
-        START, E, DONE, clk, rst: in std_logic;
+        START, E, DONE, CHECK_ZERO, clk, rst: in std_logic;
         ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic
     );
 end entity;
 
 architecture FSM_arch of FSM is
-    type S is (S0, S1, S2, S3, S4, S5, S6, S7, S8, SF);
+    type S is (S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, SF);
     signal curr_state: S;
 
 begin
-    delta_function : process(clk, rst) --spaghetti code per le transizioni della fsm
+    delta_function : process(clk, rst)
     begin
         if (rst='1') then
             curr_state <= S0;
@@ -44,8 +44,14 @@ begin
                 curr_state <= S7;
             elsif (curr_state=S7) then
                 curr_state <= S8;
-            elsif (curr_state=S8 and DONE='0') then
+            elsif (curr_state=S8 and DONE='0' and CHECK_ZERO='0') then
                 curr_state <= S6;
+            elsif (curr_state=S8 and DONE='0' and CHECK_ZERO='1') then
+                curr_state <= S9;
+            elsif (curr_state=S9 and START='1' and E='1' and DONE='0') then
+                curr_state <= S7;
+            elsif (curr_state=S9 and START='1' and E='0' and DONE='0') then
+                curr_state <= S2;
             elsif (curr_state=S8 and START='1' and DONE='1') then
                 curr_state <= SF;
             elsif (curr_state=SF and START='1' and DONE='1') then
@@ -55,7 +61,6 @@ begin
             end if;
         end if;
 end process;
---spaghettone allo scoglio per la lambda function
 with curr_state select
             ADD_EN <= '0' when S0,
                       '1' when S1,
@@ -66,6 +71,7 @@ with curr_state select
                       '1' when S6,
                       '1' when S7,
                       '0' when S8,
+                      '0' when S9,
                       '0' when SF,
                       'X' when others;
         with curr_state select
@@ -78,6 +84,7 @@ with curr_state select
                       '0' when S6,
                       '0' when S7,
                       '0' when S8,
+                      '0' when S9,
                       '0' when SF,
                       'X' when others;
         with curr_state select
@@ -90,6 +97,7 @@ with curr_state select
                       '0' when S6,
                       '1' when S7,
                       '0' when S8,
+                      '0' when S9,
                       '1' when SF,
                       'X' when others;
         with curr_state select
@@ -102,6 +110,7 @@ with curr_state select
                       '0' when S6,
                       '0' when S7,
                       '0' when S8,
+                      '0' when S9,
                       '0' when SF,
                       'X' when others;
         with curr_state select
@@ -114,6 +123,7 @@ with curr_state select
                       '0' when S6,
                       '0' when S7,
                       '0' when S8,
+                      '0' when S9,
                       '0' when SF,
                       'X' when others;
         with curr_state select
@@ -126,6 +136,7 @@ with curr_state select
                       '1' when S6,
                       '0' when S7,
                       '0' when S8,
+                      '0' when S9,
                       '0' when SF,
                       'X' when others;
         with curr_state select
@@ -138,6 +149,7 @@ with curr_state select
                       '1' when S6,
                       '1' when S7,
                       '1' when S8,
+                      '1' when S9,
                       '0' when SF,
                       'X' when others;
         with curr_state select
@@ -150,6 +162,7 @@ with curr_state select
                       '0' when S6,
                       '1' when S7,
                       '1' when S8,
+                      '0' when S9,
                       '0' when SF,
                       'X' when others;
 end architecture;
