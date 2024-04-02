@@ -187,6 +187,8 @@ architecture Behavioral of project_reti_logiche is
     
 begin
 
+    E <= not(i_mem_data(0)) and not(i_mem_data(1)) and not(i_mem_data(2)) and not(i_mem_data(3)) and not(i_mem_data(4)) and not(i_mem_data(5)) and not(i_mem_data(6)) and not(i_mem_data(7));
+    
     mux: multiplexer_o_mem_data port map(
             RC => reg_cred,
             RD => reg_data,
@@ -223,10 +225,10 @@ begin
        output => sum_reg_addr 
    );
    
-   or_start: or_i_mem_data port map(
-            i_mem_data => i_mem_data,
-            E => E
-   ); 
+--   or_start: or_i_mem_data port map(
+--            i_mem_data => i_mem_data,
+--            E => E
+--   ); 
    
    reg_data_1: RD port map(
         i_mem_data => i_mem_data,
