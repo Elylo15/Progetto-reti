@@ -21,7 +21,7 @@ begin
         if (i_rst = '1') then
             stored_value <= (others =>'0');
         elsif (i_clk'event and i_clk='1') then
-            stored_value <= stored_value;
+            stored_value <= input;
         end if;
       output <= stored_value;
     end process;
