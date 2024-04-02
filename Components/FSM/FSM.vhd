@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 entity FSM is
     port(
         START, E, DONE, CHECK_ZERO, clk, rst: in std_logic;
-        ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic
+        ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SEL_ADD, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic
     );
 end entity;
 
