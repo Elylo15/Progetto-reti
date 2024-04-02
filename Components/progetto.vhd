@@ -22,7 +22,7 @@ end project_reti_logiche;
 
 architecture Behavioral of project_reti_logiche is
 
-    --multiplexer
+    --multiplexer_o_mem_data
     component multiplexer_o_mem_data is
         port(
             RC: in std_logic_vector(7 downto 0);
@@ -31,6 +31,16 @@ architecture Behavioral of project_reti_logiche is
             o_mem_data:	out std_logic_vector(7 downto 0)
         );
     end component;
+    
+    --multiplexer RA 
+    component multiplexer_RA is
+    Port ( 
+        i_add: in std_logic_vector(15 downto 0);
+        sum_ra: in std_logic_vector(15 downto 0);
+        SEL_ADD: in std_logic;
+        output:	out std_logic_vector(15 downto 0)
+    );
+end component;
 
     --RC 
     component RC is
@@ -48,9 +58,7 @@ architecture Behavioral of project_reti_logiche is
         port(
             i_clk : in std_logic;
             i_rst : in std_logic;
-            i_add : in std_logic_vector(15 downto 0);
-            RA: in std_logic_vector(15 downto 0);
-            ADD_EN: in std_logic;
+            input : in std_logic_vector(15 downto 0);
             output : out std_logic_vector(15 downto 0)
         );
     end component;
@@ -69,12 +77,11 @@ architecture Behavioral of project_reti_logiche is
     --RD 
     component RD is
         port(
-            i_mem_data : in std_logic_vector(7 downto 0);
-            i_clk : in std_logic;
-            i_rst : in std_logic;
-            RD_RST: in std_logic;
-            RD_EN: in std_logic;
-            output: out std_logic_vector(7 downto 0)
+          i_mem_data : in std_logic_vector(7 downto 0);
+	      i_clk : in std_logic;
+	      RD_RST: in std_logic;
+	      RD_EN: in std_logic;
+	      output: out std_logic_vector(7 downto 0)
         );
     end component;
 
@@ -146,10 +153,10 @@ architecture Behavioral of project_reti_logiche is
 
     --FSM 
     component FSM is
-        port(
-            START, E, DONE, clk, rst: in std_logic;
-            ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic
-        );
+     port(
+        START, E, DONE, CHECK_ZERO, clk, rst: in std_logic;
+        ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SEL_ADD, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic
+    );
     end component;
 
     --FSM_K
@@ -164,20 +171,24 @@ architecture Behavioral of project_reti_logiche is
     signal rd_en: std_logic;
     signal sub_en: std_logic;
   
-    signal sel_out : std_logic;
+    
     signal E: std_logic;
+   
 
     signal rc_rst: std_logic;
-    signal rd_rst: std_logic;
-
     signal reg_cred: std_logic_vector(7 downto 0);
     signal sub_cred : std_logic_vector(7 downto 0);
     signal sub_reg_cred: std_logic_vector (7 downto 0);
+    signal check_zero: std_logic;
    
     signal reg_data: std_logic_vector(7 downto 0);
+    signal sel_out : std_logic;
+    signal rd_rst: std_logic;
     
     signal sum_reg_addr: std_logic_vector (15 downto 0);
     signal reg_addr: std_logic_vector (15 downto 0);
+    signal sel_add: std_logic;
+    signal mux_ra: std_logic_vector (15 downto 0);
     
     signal reg_k: std_logic_vector(9 downto 0);
     signal sum_reg_k: std_logic_vector(9 downto 0);
@@ -187,14 +198,22 @@ architecture Behavioral of project_reti_logiche is
     
 begin
 
-    E <= not(i_mem_data(0)) and not(i_mem_data(1)) and not(i_mem_data(2)) and not(i_mem_data(3)) and not(i_mem_data(4)) and not(i_mem_data(5)) and not(i_mem_data(6)) and not(i_mem_data(7));
-    
-    mux: multiplexer_o_mem_data port map(
+    E <= not(i_mem_data(0))or not(i_mem_data(1)) or not(i_mem_data(2)) or not(i_mem_data(3)) or not(i_mem_data(4)) or not(i_mem_data(5)) or not(i_mem_data(6)) or not(i_mem_data(7));
+    check_zero <= not(reg_addr(0)) or not(reg_addr(1)) or not(reg_addr(2)) or not(reg_addr(3)) or not(reg_addr(4)) or not(reg_addr(5)) or not(reg_addr(6)) or not(reg_addr(7))or not(reg_addr(8))or not(reg_addr(9))or not(reg_addr(10))or not(reg_addr(11))or not(reg_addr(12))or not(reg_addr(13))or not(reg_addr(14))or not(reg_addr(15));        
+   
+    mux_1: multiplexer_o_mem_data port map(
             RC => reg_cred,
             RD => reg_data,
             SEL_OUT => sel_out,
             o_mem_data => o_mem_data
     );
+    
+    mux_2: multiplexer_RA port map(
+        i_add=> i_add,
+        sum_ra => sum_reg_addr,
+        SEL_ADD => sel_add,
+        output => mux_ra
+   );
 
     reg_cred_1: RC port map(
         i_clk => i_clk,
@@ -213,9 +232,7 @@ begin
    reg_addr_1: RA port map(
         i_clk => i_clk,
         i_rst => i_rst,
-        i_add => i_add,
-        RA => sum_reg_addr,
-        ADD_EN => add_en,
+        input => mux_ra,
         output => reg_addr 
    );
    
@@ -233,7 +250,6 @@ begin
    reg_data_1: RD port map(
         i_mem_data => i_mem_data,
         i_clk => i_clk,
-        i_rst => i_rst,
         RD_RST => rd_rst,
         RD_EN => rd_en,
         output => reg_data
@@ -243,6 +259,7 @@ begin
         START => i_start,
         E => E,
         DONE => done,
+        CHECK_ZERO => check_zero,
         clk => i_clk,
         rst => i_rst,
         ADD_EN => add_en,
