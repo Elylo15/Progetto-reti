@@ -18,7 +18,7 @@ begin
 		if i_rst = '1' then
 			output_RK <= (others =>'0');
 		--altrimenti, RD si mantiene invariato
-		elsif i_clk' event and i_clk='1' then
+		elsif i_clk'event and i_clk='1' then
 		  output_RK <= SUM_RK;
 		else
 		  output_RK <=(others =>'X');
