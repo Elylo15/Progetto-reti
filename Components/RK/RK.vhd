@@ -20,8 +20,6 @@ begin
 		--altrimenti, RD si mantiene invariato
 		elsif i_clk'event and i_clk='1' then
 		  output_RK <= SUM_RK;
-		else
-		  output_RK <=(others =>'X');
 		end if;
 	end process;
 end RK_arch;
