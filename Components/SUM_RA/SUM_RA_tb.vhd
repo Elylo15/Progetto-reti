@@ -10,7 +10,7 @@ architecture sum_RA_tb_arch of sum_RA_tb is
         Port (
             RA: in std_logic_vector(15 downto 0);
             ADD_EN: in std_logic;
-            output: out std_logic_vector(15 downto 0)
+            output_SUM_RA: out std_logic_vector(15 downto 0)
         );
     end component;
     
@@ -23,7 +23,7 @@ begin
     uut: SUM_RA port map(
         RA => s_RA,
         ADD_EN => s_ADD_EN,
-        output => s_output
+        output_SUM_RA => s_output
     );
     
      stim_proc: process
@@ -42,6 +42,11 @@ begin
        s_RA <= "0000000000000001";
         s_ADD_EN <= '1';
         assert  s_output = "0000000000000010" report "Errore con add_en =1";
+        wait for 10 ns;
+        
+        s_RA <= (others =>'1');
+        s_ADD_EN <= '1';
+        assert  s_output = "0000000000000000" report "Errore con add_en =1 + Ra=1";
         wait for 10 ns;
         
 
