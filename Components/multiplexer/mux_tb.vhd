@@ -7,10 +7,10 @@ end mux_tb;
 architecture mux_tb_arch of mux_tb is
     component multiplexer_o_mem_data is
     port(
-        RC: in std_logic_vector(7 downto 0);
+         RC: in std_logic_vector(7 downto 0);
         RD: in std_logic_vector(7 downto 0);
         SEL_OUT: in std_logic;
-        o_mem_data:	out std_logic_vector(7 downto 0)
+        output_mux_data: out std_logic_vector(7 downto 0)
     );
     end component;
     
@@ -25,7 +25,7 @@ begin
         RC => s_RC,
         RD => s_RD,
         SEL_OUT => s_SEL_OUT,
-        o_mem_data => s_o_mem_data
+        output_mux_data => s_o_mem_data
     );
     
     stim_proc: process
@@ -40,7 +40,7 @@ begin
         wait for 10 ns;
         assert  s_o_mem_data = "01100100" report "Errore con Sel=1";
         
-        report "Successo";
+        assert false report "Successo" severity FAILURE;
         wait;
         
     end process;
