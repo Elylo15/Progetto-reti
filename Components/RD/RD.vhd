@@ -22,8 +22,6 @@ begin
 			output_RD <= i_mem_data;
 		elsif(i_clk'event and i_clk='1' and RD_EN='0') then
 			output_RD <= i_mem_data;
-	    else
-	       output_RD <= (others =>'X');
 		end if;
 	end process;
 end RD_arch;
