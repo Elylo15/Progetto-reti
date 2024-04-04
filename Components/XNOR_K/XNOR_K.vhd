@@ -15,7 +15,7 @@ architecture XNOR_K_arch of XNOR_K is
 	
 begin
     XNOR_calculation: for i in 0 to 9 generate
-	   intermediate(i) <= not (i_k(i) xnor RK(i));
+	   intermediate(i) <= (i_k(i) xnor RK(i));
 	end generate;
 	stored_value <= '1' when intermediate = "1111111111" else '0';
 	output <= stored_value;
