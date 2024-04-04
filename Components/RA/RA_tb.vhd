@@ -49,7 +49,7 @@ architecture arch of RA_tb is
             s_muxRA <= "1010001001001100";
             wait until rising_edge(s_i_clk);
             wait for 1 ns;
-            assert s_out="0000000000" report "Memory persistence error";
+            assert s_out="0000000000000000" report "Memory persistence error";
 
             s_muxRA <= "1101011000101000";
             wait until rising_edge(s_i_clk);
