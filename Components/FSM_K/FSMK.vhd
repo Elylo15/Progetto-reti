@@ -3,7 +3,9 @@ use ieee.std_logic_1164.all;
 
 entity FSMK is
     port(
-        ADD_EN, ck, rst: in std_logic;
+        ADD_EN: in std_logic;
+        clk: in std_logic;
+        rst: in std_logic;
         INC_EN: out std_logic
     );
 end entity;
@@ -12,32 +14,45 @@ architecture FSMK_arch of FSMK is
     type S is (S0, S1, S2);
     signal curr_state: S;
 
-    begin 
-        delta_function : process(ck, rst)
-        begin
-            if (rst='1') then
-                curr_state <= S0;
-            elsif (ck'event and ck='1' and rst='0') then
-                if (curr_state=S0 and ADD_EN='0') then
-                    curr_state <= S0;
-                elsif (curr_state=S0 and ADD_EN='1') then
-                    curr_state <= S1;
-                elsif (curr_state=S1 and ADD_EN='0') then
-                    curr_state <= S1;
-                elsif (curr_state=S1 and ADD_EN='1') then
-                    curr_state <= S2;
-                elsif (curr_state=S2 and ADD_EN='0') then
-                    curr_state <= S0;
-                elsif (curr_state=S2 and ADD_EN='1') then
-                    curr_state <= S1;
-                end if;
-            
-            end if;
-        end process;
-        
-        with curr_state select
-            INC_EN <= '0' when S0,
-                      '0' when S1,
-                      '1' when S2,
-                      'X' when others;
-end architecture;
+begin
+    process(clk, rst)
+    begin
+        if (rst='1') then
+            curr_state <= S0;
+        elsif clk'event and clk='1' then
+            case curr_state is
+                when S0 =>
+                    if ADD_EN='0' then
+                        curr_state <= S0;
+                    elsif ADD_EN='1' then
+                        curr_state <= S1;
+                    end if;
+                when S1 =>
+                    if ADD_EN='0' then
+                        curr_state <= S1;
+                    elsif ADD_EN='1' then
+                        curr_state <= S2;
+                    end if;
+                when S2=>
+                    if ADD_EN='0' then
+                        curr_state <= S0;
+                    elsif ADD_EN='1' then
+                        curr_state <= S1;
+                    end if;
+            end case;
+        end if;
+    end process;
+
+    process(curr_state)
+    begin
+        INC_EN <='0';
+
+        if curr_state = S0 then
+            INC_EN <= '0';
+        elsif curr_state = S1 then
+            INC_EN <= '0';
+        elsif curr_state = S2 then
+            INC_EN <= '1';
+        end if;
+    end process;
+end FSMK_arch;
