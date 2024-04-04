@@ -20,8 +20,6 @@ begin
             output_RC <= "00011111";
         elsif i_clk' event and i_clk='1' then
             output_RC <= SUB_RC;
-        else
-            output_RC <= (others =>'X');
         end if;
     end process;
 
