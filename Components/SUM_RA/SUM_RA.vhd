@@ -5,7 +5,7 @@ entity SUM_RA is
     Port (
         RA: in std_logic_vector(15 downto 0);
         ADD_EN: in std_logic;
-        output: out std_logic_vector(15 downto 0)
+        output_SUM_RA: out std_logic_vector(15 downto 0)
     );
 end SUM_RA;
 
@@ -18,7 +18,7 @@ architecture SUM_RA_arch of SUM_RA is
             a => RA(0),
 		    b => ADD_EN,
 		    c => carry(0),
-		    s => output(0)
+		    s => output_SUM_RA(0)
     );
     
     GEN_HALF_ADDERS: for i in 1 to 15 generate 
@@ -27,9 +27,7 @@ architecture SUM_RA_arch of SUM_RA is
                a => RA(i),
 		       b => carry(i-1),
 		       c => carry(i),
-		       s => output(i)
+		       s => output_SUM_RA(i)
     );
     end generate GEN_HALF_ADDERS;
-    
-
 end SUM_RA_arch;
