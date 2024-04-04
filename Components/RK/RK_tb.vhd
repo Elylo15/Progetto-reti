@@ -9,8 +9,8 @@ architecture RK_tb_arch of RK_tb is
         port( 
             i_clk : in std_logic;
             i_rst : in std_logic;
-            RK: in std_logic_vector(9 downto 0);
-            output : out std_logic_vector(9 downto 0)
+            SUM_RK: in std_logic_vector(9 downto 0);
+            output_RK : out std_logic_vector(9 downto 0)
          );
     end component;
 
@@ -23,11 +23,11 @@ architecture RK_tb_arch of RK_tb is
     begin
         uut: RK port map(
             --inputs
-            RK => s_RK,
             i_rst => s_i_rst,
             i_clk => s_i_clk,
+            SUM_RK => s_RK,
             --outputs
-            output => s_output
+            output_RK => s_output
         );
 
         clock : process
@@ -68,4 +68,3 @@ architecture RK_tb_arch of RK_tb is
             wait;
         end process;
     end RK_tb_arch;
-
