@@ -6,7 +6,7 @@ entity multiplexer_o_mem_data is
         RC: in std_logic_vector(7 downto 0);
         RD: in std_logic_vector(7 downto 0);
         SEL_OUT: in std_logic;
-        o_mem_data:	out std_logic_vector(7 downto 0)
+        output_mux_data: out std_logic_vector(7 downto 0)
     );
 end multiplexer_o_mem_data;
 
@@ -18,12 +18,12 @@ begin
     process (SEL_OUT, RC, RD)
     begin
         if SEL_OUT = '0' then
-            o_mem_data <= RC;
+            output_mux_data <= RC;
         elsif SEL_OUT = '1' then
-            o_mem_data <= RD;
+            output_mux_data <= RD;
         else
             -- Default case if SEL_OUT is not 0 or 1
-            o_mem_data <= (others => 'X'); -- Output undetermined
+            output_mux_data <= (others => 'X'); -- Output undetermined
         end if;
     end process;
 end multiplexer_o_mem_data_arch;
