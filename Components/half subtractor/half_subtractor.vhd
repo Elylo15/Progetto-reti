@@ -4,13 +4,13 @@ entity half_subtractor is
     Port (
         a: in std_logic;
         b: in std_logic;
-        c: out std_logic;
-        s: out std_logic
+        borrow: out std_logic;
+        res: out std_logic
     );
 end half_subtractor;
 
 architecture half_subtractor_arch of half_subtractor is
 begin
-    c <= a xor b;
-	s <= (not a) and b;
+    res <= a xor b;
+	borrow <= (not a) and b;
 end half_subtractor_arch;

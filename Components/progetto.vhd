@@ -56,7 +56,7 @@ architecture Behavioral of project_reti_logiche is
     component RC is
         port(
             i_clk : in std_logic;
-            i_rst : in std_logic;
+            RC_RST : in std_logic;
             SUB_RC: in std_logic_vector(7 downto 0);
             output_RC : out std_logic_vector(7 downto 0)
         );
@@ -191,7 +191,7 @@ begin
     E<='1';
     reg_cred_1: RC port map(
             i_clk => i_clk,
-            i_rst => i_rst,
+            RC_RST => rc_rst,
             SUB_RC => sub_cred,
             output_RC => reg_cred
         );
