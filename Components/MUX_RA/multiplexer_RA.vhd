@@ -19,9 +19,6 @@ begin
             output_mux_RA<= i_add;
         elsif SEL_ADD = '1' then
             output_mux_RA <= sum_ra;
-        else
-            -- Default case if SEL_OUT is not 0 or 1
-            output_mux_RA <= (others => 'X'); -- Output undetermined
         end if;
     end process;
 
