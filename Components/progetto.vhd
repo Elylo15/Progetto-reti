@@ -180,14 +180,15 @@ architecture Behavioral of project_reti_logiche is
 
 begin
 
-    process(i_mem_data)
-    begin
-        if(i_mem_data="00000000") then
-            E<='1';
-        else
-            E<='0';
-        end if;
-    end process;
+    --process(i_mem_data)
+    --begin
+      --  if(i_mem_data="00000000") then
+        --    E<='1';
+        --else
+          --  E<='0';
+        --end if;
+    --end process;
+    E<='1';
     reg_cred_1: RC port map(
             i_clk => i_clk,
             i_rst => i_rst,
@@ -207,16 +208,14 @@ begin
             SEL_ADD => sel_add,
             output_mux_RA => mux_ra
         );
-
     reg_addr_1: RA port map(
             i_clk => i_clk,
             i_rst => i_rst,
             mux_RA => mux_ra,
             output_RA => reg_addr
         );
-    o_mem_addr <= reg_addr;
+        o_mem_addr <= reg_addr;
     
-
     sum_reg_addr_1: SUM_RA port map (
             RA=> reg_addr,
             ADD_EN => add_en,
