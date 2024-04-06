@@ -41,14 +41,23 @@ architecture Behavioral of project_reti_logiche is
              output_mux_RA:	out std_logic_vector(15 downto 0)
         );
     end component;
+    
+    --multiplexer K 
+    component mux_RK is
+             Port ( 
+                xnor_input: in std_logic;
+                DONE_MUX: in std_logic;
+                output_mux_K: out std_logic
+             );
+    end component;
 
+    
     --RC 
     component RC is
         port(
             i_clk : in std_logic;
             i_rst : in std_logic;
             SUB_RC: in std_logic_vector(7 downto 0);
-            SUB_EN: in std_logic;
             output_RC : out std_logic_vector(7 downto 0)
         );
     end component;
@@ -69,7 +78,6 @@ architecture Behavioral of project_reti_logiche is
             i_clk : in std_logic;
             i_rst : in std_logic;
             SUM_RK: in std_logic_vector(9 downto 0);
-            K_EN: in std_logic;
             output_RK : out std_logic_vector(9 downto 0)
         );
     end component;
@@ -88,6 +96,7 @@ architecture Behavioral of project_reti_logiche is
     --XNOR 
     component XNOR_K is
         port(
+            i_rst: in std_logic;
             i_k: in std_logic_vector(9 downto 0);
             RK: in std_logic_vector(9 downto 0);
             output_XNOR_K: out std_logic
@@ -125,7 +134,8 @@ architecture Behavioral of project_reti_logiche is
     component FSM is
         port(
             START, E, DONE, CHECK_ZERO, clk, rst: in std_logic;
-            ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SEL_ADD, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic
+            ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SEL_ADD, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic;
+            DONE_MUX_SEL: out std_logic
         );
     end component;
 
@@ -163,6 +173,8 @@ architecture Behavioral of project_reti_logiche is
     signal reg_k: std_logic_vector(9 downto 0);
     signal sum_reg_k: std_logic_vector(9 downto 0);
     signal inc_en: std_logic;
+    signal done_mux_sel: std_logic;
+    
 
     signal done: std_logic;
 
@@ -171,17 +183,10 @@ begin
     E <= not(i_mem_data(0))or not(i_mem_data(1)) or not(i_mem_data(2)) or not(i_mem_data(3)) or not(i_mem_data(4)) or not(i_mem_data(5)) or not(i_mem_data(6)) or not(i_mem_data(7));
     check_zero <= not(reg_addr(0)) or not(reg_addr(1)) or not(reg_addr(2)) or not(reg_addr(3)) or not(reg_addr(4)) or not(reg_addr(5)) or not(reg_addr(6)) or not(reg_addr(7))or not(reg_addr(8))or not(reg_addr(9))or not(reg_addr(10))or not(reg_addr(11))or not(reg_addr(12))or not(reg_addr(13))or not(reg_addr(14))or not(reg_addr(15));
 
-    mux_1: multiplexer_o_mem_data port map(
-            RC => reg_cred,
-            RD => reg_data,
-            SEL_OUT => sel_out,
-            output_mux_data => o_mem_data
-        );
     reg_cred_1: RC port map(
             i_clk => i_clk,
             i_rst => i_rst,
             SUB_RC => sub_cred,
-            SUB_EN => sub_en,
             output_RC => reg_cred
         );
 
@@ -204,12 +209,21 @@ begin
             mux_RA => mux_ra,
             output_RA => reg_addr
         );
+    o_mem_addr <= reg_addr;
+    
 
     sum_reg_addr_1: SUM_RA port map (
             RA=> reg_addr,
             ADD_EN => add_en,
             output_SUM_RA => sum_reg_addr
         );
+    
+    mux_1: multiplexer_o_mem_data port map(
+            RC => reg_cred,
+            RD => reg_data,
+            SEL_OUT => sel_out,
+            output_mux_data => o_mem_data
+    );
 
     reg_data_1: RD port map(
             i_mem_data => i_mem_data,
@@ -233,14 +247,14 @@ begin
             RD_RST => rd_rst,
             SUB_EN => sub_en,
             O_MEM_E => o_mem_e,
-            O_MEM_WE => o_mem_we
+            O_MEM_WE => o_mem_we,
+            DONE_MUX_SEL => done_mux_sel
         );
 
     reg_k_1: RK port map(
             i_clk => i_clk,
             i_rst => i_rst,
             SUM_RK => sum_reg_k,
-            K_EN => inc_en,
             output_RK => reg_k
         );
 
@@ -251,10 +265,18 @@ begin
         );
 
     x_nor_k: XNOR_K port map(
+            i_rst => i_rst,
             i_k => i_k,
             RK => reg_k,
-            output_XNOR_K => o_done
+            output_XNOR_K => done
         );
+   --  o_done <= done;
+    
+   mux_3: mux_RK port map(
+         xnor_input => done,
+        DONE_MUX => done_mux_sel,
+        output_mux_K => o_done
+      );
 
     FSM_K: FSMK port map(
             ADD_EN => add_en,
@@ -262,4 +284,5 @@ begin
             rst => i_rst,
             INC_EN => inc_en
         );
+
 end Behavioral;
