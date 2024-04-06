@@ -22,6 +22,6 @@ begin
             stored_value <= mux_RA;
         
         end if; 
-        output_RA<= stored_value;
     end process;
+    output_RA<= stored_value;
 end RA_arch;
