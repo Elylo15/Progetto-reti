@@ -7,14 +7,14 @@ end FSM_tb;
 architecture FSM_tb_arch of FSM_tb is
     component FSM is
         port(
-            START, E, DONE, ck, rst: in std_logic;
-            ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic
+            START, E, DONE, CHECK_ZERO, clk, rst: in std_logic;
+            ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SUB_EN, O_MEM_E, O_MEM_WE, SEL_ADD: out std_logic
         );
     end component;
 
     constant clock_period : time := 20 ns;
 
-    signal s_START, s_E, s_DONE, s_rst, s_ADD_EN, s_RD_EN, s_SEL_OUT, s_RC_RST, s_RD_RST, s_SUB_EN, s_MEM_E, s_MEM_WE : std_logic;
+    signal s_START, s_E, s_DONE, s_rst, s_ADD_EN, s_RD_EN, s_SEL_OUT, s_RC_RST, s_RD_RST, s_SUB_EN, s_MEM_E, s_MEM_WE, s_CHECK_ZERO, s_SEL_ADD : std_logic;
     signal s_clk : std_logic := '1';
     shared variable simulend : boolean :=false;
     begin
@@ -23,8 +23,9 @@ architecture FSM_tb_arch of FSM_tb is
             START => s_START, 
             E => s_E, 
             DONE => s_DONE, 
-            ck => s_clk, 
+            clk => s_clk, 
             rst => s_rst,
+            CHECK_ZERO => s_CHECK_ZERO,
             --OUTPUTS
             ADD_EN => s_ADD_EN, 
             RD_EN => s_RD_EN, 
@@ -33,7 +34,8 @@ architecture FSM_tb_arch of FSM_tb is
             RD_RST => s_RD_RST, 
             SUB_EN => s_SUB_EN, 
             O_MEM_E => s_MEM_E, 
-            O_MEM_WE => s_MEM_WE
+            O_MEM_WE => s_MEM_WE,
+            SEL_ADD => s_SEL_ADD
         );
 
         clock : process
@@ -45,7 +47,7 @@ architecture FSM_tb_arch of FSM_tb is
             wait;
         end process clock;
 
-        --percorso S0-S1-S3-S4-S1-S2-S5-S6-S7-S8-SF-S0
+        --percorso S0-SX-S1-S3-S4-S1-S2-S5-S6-S7-S8-SF-S0
         stim_proc: process
         begin
             s_rst <= '1';
@@ -54,18 +56,19 @@ architecture FSM_tb_arch of FSM_tb is
             s_rst <='0';
 
             s_START <= '0';
-            s_E <= '-';
             s_DONE <= '0';
             wait until rising_edge(s_clk);
             wait for 1 ns;
             assert s_ADD_EN ='0' and s_RD_EN='0' and s_SEL_OUT='0' and s_RC_RST='1' and s_RD_RST='1' and s_SUB_EN='0' and s_MEM_E='0' and s_MEM_WE='0' report "S0 loop failed";
 
             s_START <= '1';
-            s_E <= '-';
-            s_DONE <= '0';
             wait until rising_edge(s_clk);
             wait for 1 ns;
-            assert s_ADD_EN ='1' and s_RD_EN='0' and s_SEL_OUT='0' and s_RC_RST='0' and s_RD_RST='0' and s_SUB_EN='0' and s_MEM_E='1' and s_MEM_WE='0' report "S0-S1 transition failed";
+            assert s_ADD_EN ='0' and s_RD_EN='0' and s_SEL_OUT='0' and s_RC_RST='0' and s_RD_RST='0' and s_SUB_EN='0' and s_MEM_E='1' and s_MEM_WE='0' report "S0-SX transition failed";
+
+            wait until rising_edge(s_clk);
+            wait for 1 ns;
+            assert s_ADD_EN ='1' and s_RD_EN='0' and s_SEL_OUT='0' and s_RC_RST='0' and s_RD_RST='0' and s_SUB_EN='0' and s_MEM_E='1' and s_MEM_WE='0' report "SX-S1 transition failed";
 
             s_START <= '1';
             s_E <= '1';
