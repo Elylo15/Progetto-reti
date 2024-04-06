@@ -10,17 +10,17 @@ entity RK is
  ); 
 end RK;
 architecture RK_arch of RK is 
-signal stored_value: std_logic_vector(9 downto 0);
+--signal stored_value: std_logic_vector(9 downto 0);
 begin
 	process(i_clk, i_rst)
 	begin
 	--Sequenziale
 		if i_rst = '1' then
-			stored_value <= (others =>'0');
+			output_RK <= (others =>'0');
 		--altrimenti, RD si mantiene invariato
-		elsif i_clk' event and i_clk='1' then
-		  stored_value <= SUM_RK;
+		elsif i_clk'event and i_clk='1' then
+		  output_RK <= SUM_RK;
 		end if;
-		output_RK <= stored_value;
+		--output_RK <= stored_value;
 	end process;
 end RK_arch;

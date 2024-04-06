@@ -12,16 +12,17 @@ entity RA is
 end RA;
 
 architecture RA_arch of RA is
-signal stored_value: std_logic_vector(15 downto 0);
+--signal stored_value: std_logic_vector(15 downto 0);
 begin   
     process(i_rst,i_clk)
     begin
         if (i_rst = '1') then
-            stored_value <= (others =>'0');
-        elsif (i_clk'event and i_clk='1') then
-            stored_value <= mux_RA;
-        
+            --stored_value <= (others =>'0');
+            output_RA <= (others =>'0');
+        elsif (rising_edge(i_clk)) then
+            --stored_value <= mux_RA;
+            output_RA<=mux_RA;
         end if; 
     end process;
-    output_RA<= stored_value;
+    --output_RA<= stored_value;
 end RA_arch;

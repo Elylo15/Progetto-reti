@@ -149,15 +149,15 @@ begin
             DONE_MUX_SEL <= '0'; 
 
         elsif curr_state = SX then
-            ADD_EN <='0';
+            ADD_EN <='1';
             RD_EN <= '0';
             SEL_OUT <= '0';
             RC_RST <= '0';
             RD_RST <= '0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_E <= '0';
             O_MEM_WE <= '0';
-            SEL_ADD <='0';
+            SEL_ADD <='1';
 
         elsif curr_state = S1 then
             ADD_EN <='1';

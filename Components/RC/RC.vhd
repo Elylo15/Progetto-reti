@@ -11,16 +11,17 @@ entity RC is
 end RC;
 
 architecture RC_arch of RC is
-signal stored_value: std_logic_vector (7 downto 0);
+--signal stored_value: std_logic_vector (7 downto 0);
 begin
     process(i_rst,i_clk)
         --Sequenziale
     begin
         if i_rst = '1' then
-            stored_value <= "00011111";
-        elsif i_clk' event and i_clk='1' then
-            stored_value <= SUB_RC;
+            --stored_value <= "00011111";
+            output_RC <= "00011111";
+        elsif i_clk'event and i_clk='1' then
+            output_RC <= SUB_RC;
         end if;
     end process;
-     output_RC <= stored_value;
+     --output_RC <= stored_value;
 end RC_arch;
