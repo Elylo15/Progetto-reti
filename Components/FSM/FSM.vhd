@@ -42,9 +42,6 @@ begin
                     elsif START='1' then
                         curr_state <= SX;
                     end if;
-	-- Una volta arrivati in SX allora significa che start è alto
-	-- Porre una condizione su start è ridondante a meno che tu non ti aspetti che start cambi
-	-- e voglia reagire di conseguenza
                 when SX =>
                     curr_state <= S1;
 
@@ -71,14 +68,14 @@ begin
                 when S5 =>
                     if START='1' and DONE='1' then
                         curr_state <= SF;
-                    else
+                    elsif DONE ='0' then
                         curr_state <= S6;
                     end if;
 -- Transizione definita solo dalla condizione posta su E
                 when S6 =>
-                    if START='1' and E='0' then
+                    if START='1' and E='0'and DONE='0' then
                         curr_state <= S2;
-                    elsif  START='1' and E='1' then
+                    elsif  START='1' and E='1' and DONE='0' then
                         curr_state <= S7;
                     end if;
 
@@ -86,30 +83,19 @@ begin
                     curr_state <= S8;
 
                 when S8 =>
-                    if CHECK_ZERO='0' then
+                    if CHECK_ZERO='0' and DONE='0' then
                         curr_state <= S6;
-                    elsif CHECK_ZERO='1' then
+                    elsif CHECK_ZERO='1' and DONE ='0' then
                         curr_state <= S9;
                     elsif START='1' and DONE='1' then
                         curr_state <= SF;
                     end if;
 
-                -- when S8 =>
-                --    if DONE='0' then
-		--	if CHECK_ZERO='0' then
-                --       	curr_state <= S6;
-                --    	elsif CHECK_ZERO='1' then
-                --        	curr_state <= S9;
-		--	END if;
-                --    elsif DONE='1' then
-                --        curr_state <= SF;
-                -- end if;
-
 -- Transizione condizionata solo da E
                 when S9 =>
-                    if START='1' and E='1' then
+                    if START='1' and E='1'and DONE='0' then
                         curr_state <= S7;
-                    elsif  START='1' and E='0' then
+                    elsif  START='1' and E='0' and DONE='0'then
                         curr_state <= S2;
                     end if;
 -- Qui è corretto considerare start poichè è l'unico stato in cui un suo cambiamento cambi il comportamento della tua FSM
@@ -142,19 +128,19 @@ begin
             SEL_OUT <= '0';
             RC_RST <= '1';
             RD_RST <= '1';
-            SUB_EN <= '1';
-            O_MEM_E <= '1';
+            SUB_EN <= '0';
+            O_MEM_E <= '0';
             O_MEM_WE <= '0';
             SEL_ADD <='0';
             DONE_MUX_SEL <= '0'; 
 
         elsif curr_state = SX then
-            ADD_EN <='1';
+            ADD_EN <='0';
             RD_EN <= '0';
             SEL_OUT <= '0';
             RC_RST <= '0';
             RD_RST <= '0';
-            SUB_EN <= '1';
+            SUB_EN <= '0';
             O_MEM_E <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='0';
@@ -165,8 +151,8 @@ begin
             SEL_OUT <= '0';
             RC_RST <= '0';
             RD_RST <= '0';
-            SUB_EN <= '1';
-            O_MEM_E <= '0';
+            SUB_EN <= '0';
+            O_MEM_E <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
 
@@ -183,13 +169,13 @@ begin
 
         elsif curr_state = S3 then
             ADD_EN <='1';
-            RD_EN <= '1';
-            SEL_OUT <= '0';
-            RC_RST <= '1';
+            RD_EN <= '0';
+            SEL_OUT <= '1';
+            RC_RST <= '0';
             RD_RST <= '0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
-            O_MEM_WE <= '1';
+            O_MEM_E <= '0';
+            O_MEM_WE <= '0';
             SEL_ADD <='1';
 
         elsif curr_state = S4 then
