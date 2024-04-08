@@ -141,7 +141,7 @@ begin
             SEL_ADD <='0';
 
         elsif curr_state = S2 then
-            ADD_EN <='1';
+            ADD_EN <='0';
             RD_EN <= '0';
             SEL_OUT <= '0';
             RC_RST <= '0';
@@ -158,12 +158,12 @@ begin
             RC_RST <= '0';
             RD_RST <= '0';
             SUB_EN <= '0';
-            O_MEM_E <= '0';
+            O_MEM_E <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
 
         elsif curr_state = S4 then
-            ADD_EN <='0';
+            ADD_EN <='1';
             RD_EN <= '1';
             SEL_OUT <= '0';
             RC_RST <= '0';
@@ -174,7 +174,7 @@ begin
             SEL_ADD <='1';
 
         elsif curr_state = S5 then
-            ADD_EN <='0';
+            ADD_EN <='1';
             RD_EN <= '0';
             SEL_OUT <= '0';
             RC_RST <= '0';
@@ -196,13 +196,13 @@ begin
             SEL_ADD <='1';
 
         elsif curr_state = S7 then
-            ADD_EN <='1';
+            ADD_EN <='0';
             RD_EN <= '0';
             SEL_OUT <= '0';
             RC_RST <= '0';
             RD_RST <= '0';
             SUB_EN <= '0';
-            O_MEM_E <= '0';
+            O_MEM_E <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
 
@@ -218,7 +218,7 @@ begin
             SEL_ADD <='1';
 
         elsif curr_state = S9 then
-            ADD_EN <='0';
+            ADD_EN <='1';
             RD_EN <= '0';
             SEL_OUT <= '0';
             RC_RST <= '0';
@@ -240,7 +240,7 @@ begin
             SEL_ADD <='1';
             
         elsif curr_state = S11 then
-            ADD_EN <='0';
+            ADD_EN <='1';
             RD_EN <= '0';
             SEL_OUT <= '0';
             RC_RST <= '0';
@@ -256,7 +256,7 @@ begin
             SEL_OUT <= '0';
             RC_RST <= '0';
             RD_RST <= '0';
-            SUB_EN <= '0';
+            SUB_EN <= '1';
             O_MEM_E <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';

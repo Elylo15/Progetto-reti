@@ -31,7 +31,7 @@ architecture project_tb_arch of project_tb is
 
     signal memory_control : std_logic := '0';
     
-    constant SCENARIO_ADDRESS : integer := 1234;
+    constant SCENARIO_ADDRESS : integer := 8;
 
     component project_reti_logiche is
         port (
@@ -174,8 +174,7 @@ begin
             wait until rising_edge(tb_clk);
         end loop;
 
-        --assert tb_o_mem_e = '0' or tb_o_mem_we = '0' report "TEST FALLITO o_mem_e !=0 memory should not be written after done." severity failure;
-        assert RAM(1235) = "00011111" report "error";
+        assert tb_o_mem_e = '0' or tb_o_mem_we = '0' report "TEST FALLITO o_mem_e !=0 memory should not be written after done." severity failure;
 
         for i in 0 to SCENARIO_LENGTH*2-1 loop
             assert RAM(SCENARIO_ADDRESS+i) = std_logic_vector(to_unsigned(scenario_full(i),8)) report "TEST FALLITO @ OFFSET=" & integer'image(i) & " expected= " & integer'image(scenario_full(i)) & " actual=" & integer'image(to_integer(unsigned(RAM(SCENARIO_ADDRESS+i)))) severity failure;

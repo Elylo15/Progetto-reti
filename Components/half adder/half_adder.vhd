@@ -13,6 +13,6 @@ end half_adder;
 architecture half_adder_arch of half_adder is
 
 begin
-    s <= a xor b;
-	c <= a and b;
+        s <= a xor b;
+        c <= a and b;
 end half_adder_arch;
