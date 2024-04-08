@@ -61,7 +61,7 @@ begin
                         curr_state <= SF;
                     end if;
                 when S5 =>
-                    if DONE='0' and CHECK_ZERO='0' then
+                    if DONE='0' then
                         curr_state <= S2;
                     elsif DONE ='1' then
                         curr_state <= SF;
@@ -81,7 +81,7 @@ begin
                         curr_state <= S12;
                     elsif DONE='1' then
                         curr_state <= SF;
-                    elsif DONE='0' and CHECK_ZERO ='0' then
+                    elsif DONE='0' and CHECK_ZERO ='0'then
                         curr_state <=S6;
                     end if;
                 when S10 =>
@@ -273,4 +273,5 @@ begin
             SEL_ADD <='0';
         end if;
     end process;
+
 end FSM_arch;
