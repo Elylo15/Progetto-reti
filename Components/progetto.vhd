@@ -152,14 +152,14 @@ architecture Behavioral of project_reti_logiche is
     signal sub_en: std_logic;
 
 
-    signal E: std_logic;
+    signal s_E: std_logic;
 
 
     signal rc_rst: std_logic;
     signal reg_cred: std_logic_vector(7 downto 0);
     signal sub_cred : std_logic_vector(7 downto 0);
     signal sub_reg_cred: std_logic_vector (7 downto 0);
-    signal check_zero: std_logic;
+    signal s_check_zero: std_logic;
 
     signal reg_data: std_logic_vector(7 downto 0);
     signal sel_out : std_logic;
@@ -180,15 +180,10 @@ architecture Behavioral of project_reti_logiche is
 
 begin
 
-    --process(i_mem_data)
-    --begin
-      --  if(i_mem_data="00000000") then
-        --    E<='1';
-        --else
-          --  E<='0';
-        --end if;
-    --end process;
-    E<='1';
+    s_E<='1' when i_mem_data=("00000000") else '0';
+    s_check_zero <= '1' when reg_cred=("00000000") else '0';
+
+    
     reg_cred_1: RC port map(
             i_clk => i_clk,
             RC_RST => rc_rst,
@@ -239,9 +234,9 @@ begin
 
     FSM_1 : FSM port map(
             START => i_start,
-            E => E,
+            E => s_E,
             DONE => done,
-            CHECK_ZERO => check_zero,
+            CHECK_ZERO => s_check_zero,
             clk => i_clk,
             rst => i_rst,
             ADD_EN => add_en,
@@ -289,5 +284,4 @@ begin
             rst => i_rst,
             INC_EN => inc_en
         );
-
 end Behavioral;
