@@ -176,7 +176,7 @@ begin
         elsif curr_state = S5 then
             ADD_EN <='1';
             RD_EN <= '0';
-            SEL_OUT <= '0';
+            SEL_OUT <= '1';
             RC_RST <= '0';
             RD_RST <= '0';
             SUB_EN <= '0';
