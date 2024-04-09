@@ -76,7 +76,7 @@ architecture Behavioral of project_reti_logiche is
     component RK is
         port(
             i_clk : in std_logic;
-            i_rst : in std_logic;
+            RK_RST : in std_logic;
             SUM_RK: in std_logic_vector(9 downto 0);
             output_RK : out std_logic_vector(9 downto 0)
         );
@@ -134,7 +134,7 @@ architecture Behavioral of project_reti_logiche is
     component FSM is
         port(
             START, E, DONE, CHECK_ZERO, clk, rst: in std_logic;
-            ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, SEL_ADD, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic;
+            ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, RK_RST, SEL_ADD, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic;
             DONE_MUX_SEL: out std_logic
         );
     end component;
@@ -164,6 +164,7 @@ architecture Behavioral of project_reti_logiche is
     signal reg_data: std_logic_vector(7 downto 0);
     signal sel_out : std_logic;
     signal rd_rst: std_logic;
+    signal rk_rst: std_logic;
 
     signal sum_reg_addr: std_logic_vector (15 downto 0);
     signal reg_addr: std_logic_vector (15 downto 0);
@@ -244,6 +245,7 @@ begin
             SEL_OUT => sel_out,
             RC_RST => rc_rst,
             RD_RST => rd_rst,
+            RK_RST => rk_rst,
             SUB_EN => sub_en,
             O_MEM_E => o_mem_e,
             O_MEM_WE => o_mem_we,
@@ -253,7 +255,7 @@ begin
 
     reg_k_1: RK port map(
             i_clk => i_clk,
-            i_rst => i_rst,
+            RK_RST => rk_rst,
             SUM_RK => sum_reg_k,
             output_RK => reg_k
         );
