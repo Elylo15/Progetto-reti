@@ -271,7 +271,7 @@ begin
             RC_RST <= '0';
             RD_RST <= '0';
             RK_RST <='0';
-            SUB_EN <= '1';
+            SUB_EN <= '0';
             O_MEM_E <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
