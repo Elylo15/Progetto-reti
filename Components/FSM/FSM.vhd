@@ -44,7 +44,11 @@ begin
                         curr_state <= S1;
                     end if;
                 when S1 =>
-                    curr_state <= S2;
+                    if DONE='0' then
+                        curr_state <= S2;
+                    elsif DONE='1' then
+                        curr_state <=SF;
+                    end if;
 
                 when S2 =>
                     curr_state <= S3;
