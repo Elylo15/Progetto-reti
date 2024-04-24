@@ -414,7 +414,7 @@ entity FSM is
         RK_RST: out std_logic;
         SEL_ADD: out std_logic;
         SUB_EN: out std_logic;
-        O_MEM_E: out std_logic;
+        O_MEM_EN: out std_logic;
         O_MEM_WE: out std_logic;
         DONE_MUX_SEL: out std_logic
     );
@@ -514,7 +514,7 @@ begin
         RK_RST <='0';
         SEL_ADD <='0';
         SUB_EN <='0';
-        O_MEM_E <='0';
+        O_MEM_EN <='0';
         O_MEM_WE <='0';
         DONE_MUX_SEL <= '1';
 
@@ -526,7 +526,7 @@ begin
             RD_RST <= '1';
             RK_RST <='1';
             SUB_EN <= '0';
-            O_MEM_E <= '0';
+            O_MEM_EN <= '0';
             O_MEM_WE <= '0';
             SEL_ADD <='0';
             DONE_MUX_SEL <= '0';
@@ -539,7 +539,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '0';
+            O_MEM_EN <= '0';
             O_MEM_WE <= '0';
             SEL_ADD <='0';
 
@@ -551,7 +551,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
 
@@ -563,7 +563,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
 
@@ -575,7 +575,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '1';
             SEL_ADD <='1';
 
@@ -587,7 +587,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '1';
             SEL_ADD <='1';
 
@@ -599,7 +599,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '1';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
 
@@ -611,7 +611,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
 
@@ -623,7 +623,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '1';
             SEL_ADD <='1';
 
@@ -635,7 +635,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '1';
             SEL_ADD <='1';
             
@@ -647,7 +647,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '0';
+            O_MEM_EN <= '0';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
             
@@ -659,7 +659,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '1';
             SEL_ADD <='1';
             
@@ -671,7 +671,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
             
@@ -683,7 +683,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '0';
+            O_MEM_EN <= '0';
             O_MEM_WE <= '0';
             SEL_ADD <='0';
         end if;
@@ -776,7 +776,7 @@ entity project_reti_logiche is
         i_mem_data: in std_logic_vector(7 downto 0);
         o_mem_data: out std_logic_vector(7 downto 0);
         o_mem_we: out std_logic;
-        o_mem_e: out std_logic
+        o_mem_en: out std_logic
 
     );
 end project_reti_logiche;
@@ -895,7 +895,7 @@ architecture Behavioral of project_reti_logiche is
     component FSM is
         port(
             START, E, DONE, CHECK_ZERO, clk, rst: in std_logic;
-            ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, RK_RST, SEL_ADD, SUB_EN, O_MEM_E, O_MEM_WE: out std_logic;
+            ADD_EN, RD_EN, SEL_OUT, RC_RST, RD_RST, RK_RST, SEL_ADD, SUB_EN, O_MEM_EN, O_MEM_WE: out std_logic;
             DONE_MUX_SEL: out std_logic
         );
     end component;
@@ -1008,7 +1008,7 @@ begin
             RD_RST => rd_rst,
             RK_RST => rk_rst,
             SUB_EN => sub_en,
-            O_MEM_E => o_mem_e,
+            O_MEM_EN => o_mem_en,
             O_MEM_WE => o_mem_we,
             DONE_MUX_SEL => done_mux_sel,
             SEL_ADD => SEL_ADD
