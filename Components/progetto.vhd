@@ -444,10 +444,12 @@ begin
                     elsif DONE='1' then
                         curr_state <=SF;
                     end if;
-
                 when S2 =>
-                    curr_state <= S3;
-
+                    if DONE='0' then
+                        curr_state <= S3;
+                    elsif DONE='1' then
+                        curr_state <= SF;
+                    end if;
                 when S3 =>
                     if E='0' then
                         curr_state<= S4;
@@ -461,39 +463,39 @@ begin
                         curr_state <= SF;
                     end if;
                 when S5 =>
-                    if DONE='0' then
                         curr_state <= S2;
-                    elsif DONE ='1' then
+                when S6 =>
+                    if DONE='0' then
+                        curr_state <= S7;
+                    elsif DONE='1' then
                         curr_state <= SF;
                     end if;
-                when S6 =>
-                    curr_state <=S7;
+                
+                    --curr_state <=S7;
                 when S7 =>
                     if E='0' then
-                        curr_state <=S10;
+                       curr_state <=S10;
                     elsif E='1' then
                         curr_state <= S8;
                     end if;
                 when S8 =>
                     curr_state <=S9;
                 when S9 =>
-                    if DONE='0' and CHECK_ZERO ='1' then
+                    if CHECK_ZERO ='1' then
                         curr_state <= S12;
-                    elsif DONE='1' then
-                        curr_state <= SF;
-                    elsif DONE='0' and CHECK_ZERO ='0'then
+                    elsif CHECK_ZERO ='0' then
                         curr_state <=S6;
                     end if;
                 when S10 =>
                     curr_state <=S11;
                 when S11 =>
+                     curr_state <=S6;
+                when S12 => 
                     if DONE='0' then
-                        curr_state <=S6;
+                        curr_state <= S7;
                     elsif DONE='1' then
                         curr_state <= SF;
                     end if;
-                when S12 =>
-                    curr_state <=S7;
                 when SF =>
                     if START='1' and DONE='1' then
                         curr_state <= SF;
@@ -1030,7 +1032,7 @@ begin
     x_nor_k: XNOR_K port map(
             i_rst => i_rst,
             i_k => i_k,
-            RK => reg_k,
+            RK => sum_reg_k,
             output_XNOR_K => done
         );
    --  o_done <= done;
