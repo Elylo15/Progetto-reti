@@ -19,7 +19,7 @@ entity FSM is
         RK_RST: out std_logic;
         SEL_ADD: out std_logic;
         SUB_EN: out std_logic;
-        O_MEM_E: out std_logic;
+        O_MEM_EN: out std_logic;
         O_MEM_WE: out std_logic;
         DONE_MUX_SEL: out std_logic
     );
@@ -119,7 +119,7 @@ begin
         RK_RST <='0';
         SEL_ADD <='0';
         SUB_EN <='0';
-        O_MEM_E <='0';
+        O_MEM_EN <='0';
         O_MEM_WE <='0';
         DONE_MUX_SEL <= '1';
 
@@ -131,7 +131,7 @@ begin
             RD_RST <= '1';
             RK_RST <='1';
             SUB_EN <= '0';
-            O_MEM_E <= '0';
+            O_MEM_EN <= '0';
             O_MEM_WE <= '0';
             SEL_ADD <='0';
             DONE_MUX_SEL <= '0';
@@ -144,7 +144,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '0';
+            O_MEM_EN <= '0';
             O_MEM_WE <= '0';
             SEL_ADD <='0';
 
@@ -156,7 +156,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
 
@@ -168,7 +168,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
 
@@ -180,7 +180,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '1';
             SEL_ADD <='1';
 
@@ -192,7 +192,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '1';
             SEL_ADD <='1';
 
@@ -204,7 +204,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '1';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
 
@@ -216,7 +216,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
 
@@ -228,7 +228,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '1';
             SEL_ADD <='1';
 
@@ -240,7 +240,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '1';
             SEL_ADD <='1';
             
@@ -252,7 +252,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '0';
+            O_MEM_EN <= '0';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
             
@@ -264,7 +264,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '1';
             SEL_ADD <='1';
             
@@ -276,7 +276,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '1';
+            O_MEM_EN <= '1';
             O_MEM_WE <= '0';
             SEL_ADD <='1';
             
@@ -288,7 +288,7 @@ begin
             RD_RST <= '0';
             RK_RST <='0';
             SUB_EN <= '0';
-            O_MEM_E <= '0';
+            O_MEM_EN <= '0';
             O_MEM_WE <= '0';
             SEL_ADD <='0';
         end if;
