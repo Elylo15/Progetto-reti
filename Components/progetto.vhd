@@ -1,5 +1,4 @@
 --COMPONENTI DI BASE: componenti basilari-------------------------------------------------------------------------------------------------------------------------------------------------------
-
 --Half-Subtractor-----------------------------------------------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -14,37 +13,32 @@ end half_subtractor;
 
 architecture half_subtractor_arch of half_subtractor is
 begin
-    res <= a xor b;
+    res <= a xor b; 
 	borrow <= (not a) and b;
 end half_subtractor_arch;
 ---------------------------------------------------------------------------------------------------------------------------------------
-
 --Half Adder---------------------------------------------------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
 entity half_adder is
     port(
 		a: in std_logic;
 		b: in std_logic;
-		c: out std_logic;
-		s: out std_logic
+		carry: out std_logic;
+		res: out std_logic
 	);
 end half_adder;
 
 architecture half_adder_arch of half_adder is
-
 begin
-        s <= a xor b;
-        c <= a and b;
+    res <= a xor b; 
+    carry <= a and b;
 end half_adder_arch;
 ---------------------------------------------------------------------------------------------------------------------------------------
-
 --XNOR---------------------------------------------------------------------------------------------------------------------------------
 --Usato per calcolare il segnale di DONE
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
 entity XNOR_K is
 	port(
 	    i_rst: in std_logic;
@@ -68,12 +62,10 @@ begin
    end process;
 end XNOR_K_arch;
 ---------------------------------------------------------------------------------------------------------------------------------------
-
---MUX_RA---------------------------------------------------------------------------------------------------------------------------------
+--MUX_RA-------------------------------------------------------------------------------------------------------------------------------
 --Necessario per alternare il salvataggio in memoria e la lettura da RAM
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
 entity multiplexer_RA is
     Port ( 
         i_add: in std_logic_vector(15 downto 0);
@@ -93,10 +85,8 @@ begin
             output_mux_RA <= sum_ra;
         end if;
     end process;
-
 end multiplexer_RA_arch;
 ---------------------------------------------------------------------------------------------------------------------------------------
-
 --MUX_O_MEM_DATA-----------------------------------------------------------------------------------------------------------------------
 --Seleziona se far uscire il valore di credibilità o l'ultimo valore valido
 library IEEE;
@@ -114,8 +104,6 @@ end multiplexer_o_mem_data;
 architecture multiplexer_o_mem_data_arch of multiplexer_o_mem_data is
 
 begin
-    --quando sel =0, O_MEM_DATA = RC
-    --quando sel =1, O_MEM_DATA = RD
     process (SEL_OUT, RC, RD)
     begin
         if SEL_OUT = '0' then
@@ -129,12 +117,10 @@ begin
     end process;
 end multiplexer_o_mem_data_arch;
 ---------------------------------------------------------------------------------------------------------------------------------------
-
 --MUX_RK----------------------------------------------------------------------------------------------------------------------
 --Impone che il DONE rimanga basso nelle fasi di non elaborazione
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
 entity mux_RK is
  Port ( 
     xnor_input: in std_logic;
@@ -144,7 +130,6 @@ entity mux_RK is
 end mux_RK;
 
 architecture mux_RK_arch of mux_RK is
-
 begin
  process (DONE_MUX, xnor_input)
     begin
@@ -154,20 +139,13 @@ begin
             output_mux_K <= xnor_input;
         end if;
     end process;
-
 end mux_RK_arch;
 ---------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
 --REGISTRI: elementi di memoria dinamica a cui si appoggia la logica del circuito------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 --Registro RC--------------------------------------------------------------------------------------------------------------------------
 --Gestisce dinamicamente il valore di credibilità attraverso un sottrattore
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
 entity RC is
     port(
         i_clk : in std_logic;
@@ -189,12 +167,10 @@ begin
     end process;
 end RC_arch;
 -------------------------------------------------------------------------------------------------------------------------------------------
-
 --Registro RA------------------------------------------------------------------------------------------------------------------------------
 --Necessario per il calcolo degli indirizzi
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
 entity RA is
     port(
         i_clk : in std_logic;
@@ -214,10 +190,8 @@ begin
             output_RA <= mux_RA;
         end if;
     end process;
-    
 end RA_arch;
 -------------------------------------------------------------------------------------------------------------------------------------------
-
 --Registro RD------------------------------------------------------------------------------------------------------------------------------
 --Salva l'ultimo valore letto diverso da zero
 library IEEE;
@@ -234,7 +208,6 @@ end RD;
 
 architecture RD_arch of RD is
 begin
-
 	memory : process(RD_RST, i_clk)
 	begin 
 		if(RD_RST='1') then
@@ -245,7 +218,6 @@ begin
 	end process;
 end RD_arch;
 -------------------------------------------------------------------------------------------------------------------------------------------
-
 --Registro RK------------------------------------------------------------------------------------------------------------------------------
 --Necessario per il calcolo di K
 library IEEE;
@@ -271,14 +243,11 @@ begin
 	end process;
 end RK_arch;
 -------------------------------------------------------------------------------------------------------------------------------------------
-
---SOMMATORI E SOTTRATTORI: componenti che si occupano dell'incremento e decremento di determinati valori nel circuito
+--SOMMATORI E SOTTRATTORI: componenti che si occupano dell'incremento e decremento di determinati valori nel circuito--------------------------------------------------------------------------------
 --SUB_RC-----------------------------------------------------------------------------------------------------------------------------------
 --Il componente si occupa di decrementare di 1 il valore di credibilità quando riceve il segnale di enable corrispondente
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
-
 entity SUB_RC is
     Port (
         RC: in std_logic_vector(7 downto 0);
@@ -306,15 +275,12 @@ begin
                        res => output_SUM_RC(i)
             );
             end generate GEN_HALF_SUB;
-
 end SUB_RC_arch;
 -------------------------------------------------------------------------------------------------------------------------------------------
-
 --SUM_RA-----------------------------------------------------------------------------------------------------------------------------------
 --Calcola l'indirizzo di memoria successivo
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
 entity SUM_RA is
     Port (
         RA: in std_logic_vector(15 downto 0);
@@ -323,36 +289,31 @@ entity SUM_RA is
     );
 end SUM_RA;
 
-
 architecture SUM_RA_arch of SUM_RA is
-
    signal carry: std_logic_vector(15 downto 0);
  begin   
     HA0: entity work.half_adder
         port map(
             a => RA(0),
 		    b => ADD_EN,
-		    c => carry(0),
-		    s => output_SUM_RA(0)
+		    carry => carry(0),
+		    res => output_SUM_RA(0)
     );
-    
     GEN_HALF_ADDERS: for i in 1 to 15 generate 
         HA_i: entity work.half_adder
             port map(
                a => RA(i),
 		       b => carry(i-1),
-		       c => carry(i),
-		       s => output_SUM_RA(i)
+		       carry => carry(i),
+		       res => output_SUM_RA(i)
     );
     end generate GEN_HALF_ADDERS;
 end SUM_RA_arch;
 -------------------------------------------------------------------------------------------------------------------------------------------
-
 --SUM_RK-----------------------------------------------------------------------------------------------------------------------------------
 --Incrementa di 1 il valore K
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
 entity SUM_K is
     Port (
         RK: in std_logic_vector(9 downto 0);
@@ -363,35 +324,26 @@ end SUM_K;
 
 architecture SUM_K_arch of SUM_K is
  signal carry: std_logic_vector(9 downto 0);
- 
 begin
      HA0: entity work.half_adder
         port map(
             a => RK(0),
 		    b => K_EN,
-		    c => carry(0),
-		    s => output_SUM_RK(0)
+		    carry => carry(0),
+		    res => output_SUM_RK(0)
     );
-    
      GEN_HALF_ADDERS: for i in 1 to 9 generate 
         HA_i: entity work.half_adder
             port map(
                a => RK(i),
 		       b => carry(i-1),
-		       c => carry(i),
-		       s => output_SUM_RK(i)
+		       carry => carry(i),
+		       res => output_SUM_RK(i)
     );
     end generate GEN_HALF_ADDERS;
-    
 end SUM_K_arch;
 -------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
 --MACCHINE A STATI FINITI---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 --FSM--------------------------------------------------------------------------------------------------------------------------------------
 --La macchina gestisce la logica principale del circuito
 library ieee;
@@ -404,8 +356,6 @@ entity FSM is
         CHECK_ZERO: in std_logic;
         clk: in std_logic;
         rst: in std_logic;
-
-
         ADD_EN: out std_logic;
         RD_EN: out std_logic;
         SEL_OUT: out std_logic;
@@ -421,9 +371,8 @@ entity FSM is
 end entity;
 
 architecture FSM_arch of FSM is
-    type S is (S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, SF);
+    type S is (S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, SF); --stati della macchina
     signal curr_state: S;
-
 begin
     process(clk, rst)
     begin
@@ -431,7 +380,6 @@ begin
             curr_state <= S0;
         elsif clk'event and clk='1' then
             case curr_state is
-
                 when S0 =>
                     if START='0' then
                         curr_state <= S0;
@@ -470,8 +418,6 @@ begin
                     elsif DONE='1' then
                         curr_state <= SF;
                     end if;
-                
-                    --curr_state <=S7;
                 when S7 =>
                     if E='0' then
                        curr_state <=S10;
@@ -505,7 +451,6 @@ begin
             end case;
         end if;
     end process;
-
     process(curr_state)
     begin
         ADD_EN<='0';
@@ -690,10 +635,8 @@ begin
             SEL_ADD <='0';
         end if;
     end process;
-
 end FSM_arch;
 -------------------------------------------------------------------------------------------------------------------------------------------
-
 --FSM_K------------------------------------------------------------------------------------------------------------------------------------
 --Una macchina secondaria che gestisce l'incremento di k
 library ieee;
@@ -711,7 +654,6 @@ end entity;
 architecture FSMK_arch of FSMK is
     type S is (S0, S1, S2);
     signal curr_state: S;
-
 begin
     process(clk, rst)
     begin
@@ -740,11 +682,9 @@ begin
             end case;
         end if;
     end process;
-
     process(curr_state)
     begin
         INC_EN <='0';
-
         if curr_state = S0 then
             INC_EN <= '0';
         elsif curr_state = S1 then
@@ -755,15 +695,9 @@ begin
     end process;
 end FSMK_arch;
 -------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
 --PROGETTO: il componente vero e proprio con la relativa interfaccia verso l'esterno-------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
 entity project_reti_logiche is
     port (
         i_clk: in std_logic;
@@ -1035,7 +969,7 @@ begin
             RK => sum_reg_k,
             output_XNOR_K => done
         );
-   --  o_done <= done;
+
     
    mux_3: mux_RK port map(
          xnor_input => done,
